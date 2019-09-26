@@ -17,11 +17,7 @@ import java.net.CookiePolicy
 
 class Elite {
     companion object {
-        lateinit var instance: Elite
-    }
-
-    init {
-        instance = this
+        val instance: Elite = Elite()
     }
 
     private var auth: AuthService? = null
