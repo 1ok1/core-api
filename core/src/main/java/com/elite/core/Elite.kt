@@ -16,34 +16,37 @@ import java.net.CookiePolicy
  */
 
 class Elite {
-    companion object {
-        val instance: Elite = Elite()
-    }
 
-    private var auth: AuthService? = null
-    private lateinit var context: Context
-    private lateinit var sAuthUrl: String
-    private lateinit var sUserRole: String
-    private var timeOut: Long = 15
-    var appName = ""
-    private lateinit var okHttpClient: OkHttpClient
-    private lateinit var okHttpBuilder: OkHttpClient.Builder
-    private lateinit var cookiePrefs: SharedPreferences
-    private lateinit var mEnvironment: Environment
     private val eliteSharedPref = "io.elite.shared.pref"
     private val eliteSharedPrefUserId = "io.elite.shared.pref.userId"
     private val eliteSharedPrefUserRole = "io.elite.shared.pref.eliteSharedPrefUserRole"
     private val eliteSharedPrefUserToken = "io.elite.shared.pref.eliteSharedPrefUserToken"
     private val eliteSharedPrefRequestType = "io.elite.shared.pref.eliteSharedPrefRequestType"
     private val eliteSharedPrefLoginCheck = "io.elite.shared.pref.eliteSharedPrefLoginCheck"
-    private val eliteSharedPrefAuthTokenPreData =
-        "io.elite.shared.pref.eliteSharedPrefAuthTokenPreData"
+    private val eliteSharedPrefauthIdentifier =
+        "io.elite.shared.pref.eliteSharedPrefauthIdentifier"
 
-    var authTokenPreData: String?
-        get() = cookiePrefs.getString(eliteSharedPrefAuthTokenPreData, "")
+    companion object {
+        val instance: Elite = Elite()
+    }
+
+
+    private lateinit var okHttpClient: OkHttpClient
+    private lateinit var okHttpBuilder: OkHttpClient.Builder
+    private lateinit var cookiePrefs: SharedPreferences
+    private lateinit var mEnvironment: Environment
+
+    private var auth: AuthService? = null
+    private lateinit var context: Context
+    private lateinit var sAuthUrl: String
+    private var timeOut: Long = 15
+    var appName = ""
+
+    var authIdentifier: String?
+        get() = cookiePrefs.getString(eliteSharedPrefauthIdentifier, "")
         set(preData) {
             val prefsWriter = cookiePrefs.edit()
-            prefsWriter.putString(eliteSharedPrefUserId, preData)
+            prefsWriter.putString(eliteSharedPrefauthIdentifier, preData)
             prefsWriter.apply()
         }
 
@@ -138,7 +141,11 @@ class Elite {
     }
 
     interface IAuthUrl {
-        fun authUrl(authUrl: String): IUserRole
+        fun authUrl(authUrl: String): IAuthIdentifier
+    }
+
+    interface IAuthIdentifier {
+        fun authIdentifier(authIdentifier: String): IUserRole
     }
 
     interface IUserRole {
@@ -158,8 +165,8 @@ class Elite {
     }
 
 
-    private class Builder(context: Context) : IEnvironment, IUserRole, IAuthUrl, IAppName, ItimeOut,
-        IBuild {
+    private class Builder(context: Context) : IEnvironment, IUserRole, IAuthUrl,
+        IAuthIdentifier, IAppName, ItimeOut, IBuild {
 
         init {
             instance.context = context
@@ -175,13 +182,18 @@ class Elite {
             return this
         }
 
-        override fun authUrl(authUrl: String): IUserRole {
+        override fun authUrl(authUrl: String): IAuthIdentifier {
             instance.sAuthUrl = authUrl
             return this
         }
 
+        override fun authIdentifier(authIdentifier: String): IUserRole {
+            instance.authIdentifier = authIdentifier
+            return this
+        }
+
         override fun useRole(userRole: String): IAppName {
-            instance.sUserRole = userRole
+            instance.userRole = userRole
             return this
         }
 

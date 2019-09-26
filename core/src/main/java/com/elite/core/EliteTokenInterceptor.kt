@@ -20,8 +20,11 @@ class EliteTokenInterceptor : Interceptor {
         val builder = request.newBuilder()
         builder.addHeader("App-Name", Elite.instance.appName)
         if (Elite.instance.requestType && Elite.instance.userToken != "") {
-            builder.addHeader("Authorization", Elite.instance.authTokenPreData!! + Elite.instance.userToken!!)
-            if (Elite.instance.userToken != "") {
+            builder.addHeader(
+                "Authorization",
+                Elite.instance.authIdentifier!! + Elite.instance.userToken!!
+            )
+            if (Elite.instance.userRole != "") {
                 builder.addHeader("x-hasura-role", Elite.instance.userRole!!)
             }
         }
