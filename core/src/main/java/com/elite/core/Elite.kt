@@ -174,6 +174,11 @@ class Elite {
 
         fun context(context: Context): Builder {
             instance.context = context
+            instance.cookiePrefs =
+                instance.context.getSharedPreferences(
+                    instance.eliteSharedPref,
+                    Context.MODE_PRIVATE
+                )
             return this
         }
 
@@ -219,11 +224,7 @@ class Elite {
                 .readTimeout(instance.timeOut, TimeUnit.SECONDS)
                 .cookieJar(JavaNetCookieJar(cookieManager))
                 .build()
-            instance.cookiePrefs =
-                instance.context.getSharedPreferences(
-                    instance.eliteSharedPref,
-                    Context.MODE_PRIVATE
-                )
+
             instance.auth = instance.getAuth()
             return instance
         }
