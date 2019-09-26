@@ -162,7 +162,7 @@ data class ConfirmMobileRequest(
 
 data class LoginRequestOtp(
     var mobile: String,
-    var otp: String,
+    var otp: String? = null,
     var info: JsonObject? = null
 ) : Serializable
 
