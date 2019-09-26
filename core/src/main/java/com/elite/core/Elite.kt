@@ -41,14 +41,16 @@ class Elite {
     private lateinit var sAuthUrl: String
     private var timeOut: Long = 15
     var appName = ""
+    var authIdentifier = ""
+    var userRole = ""
 
-    var authIdentifier: String?
+    /*var authIdentifier: String?
         get() = cookiePrefs.getString(eliteSharedPrefauthIdentifier, "")
         set(preData) {
             val prefsWriter = cookiePrefs.edit()
             prefsWriter.putString(eliteSharedPrefauthIdentifier, preData)
             prefsWriter.apply()
-        }
+        }*/
 
     var userId: Int?
         get() = cookiePrefs.getInt(eliteSharedPrefUserId, -1)
@@ -77,13 +79,13 @@ class Elite {
             prefsWriter.apply()
         }
 
-    var userRole: String?
+    /*var userRole: String?
         get() = cookiePrefs.getString(eliteSharedPrefUserRole, "")
         set(userRole) {
             val prefsWriter = cookiePrefs.edit()
             prefsWriter.putString(eliteSharedPrefUserRole, userRole)
             prefsWriter.apply()
-        }
+        }*/
 
     fun setLogin() {
         val prefsWriter = cookiePrefs.edit()
@@ -174,11 +176,6 @@ class Elite {
 
         fun context(context: Context): Builder {
             instance.context = context
-            instance.cookiePrefs =
-                instance.context.getSharedPreferences(
-                    instance.eliteSharedPref,
-                    Context.MODE_PRIVATE
-                )
             return this
         }
 
@@ -224,7 +221,11 @@ class Elite {
                 .readTimeout(instance.timeOut, TimeUnit.SECONDS)
                 .cookieJar(JavaNetCookieJar(cookieManager))
                 .build()
-
+            instance.cookiePrefs =
+                instance.context.getSharedPreferences(
+                    instance.eliteSharedPref,
+                    Context.MODE_PRIVATE
+                )
             instance.auth = instance.getAuth()
             return instance
         }
