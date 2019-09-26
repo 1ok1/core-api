@@ -44,6 +44,7 @@ class Elite {
     var authIdentifier = ""
     var userRole = ""
 
+
     /*var authIdentifier: String?
         get() = cookiePrefs.getString(eliteSharedPrefauthIdentifier, "")
         set(preData) {
