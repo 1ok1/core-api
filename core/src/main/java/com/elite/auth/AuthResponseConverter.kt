@@ -17,7 +17,12 @@ class AuthResponseConverter<T>(private val resType: Type) : Converter<T, AuthExc
             if (code == 200) {
                 return Util.parseJson<T>(AuthService.gson, code, responseBody, resType)
             } else {
-                val err = Util.parseJson<AuthErrorResponse>(AuthService.gson, code, responseBody, AuthErrorResponse::class.java)
+                val err = Util.parseJson<AuthErrorResponse>(
+                    AuthService.gson,
+                    code,
+                    responseBody,
+                    AuthErrorResponse::class.java
+                )
                 err!!.response = responseBody
                 val errCode: AuthError
                 when (code) {
@@ -50,8 +55,8 @@ class AuthResponseConverter<T>(private val resType: Type) : Converter<T, AuthExc
     }
 
     internal class AuthErrorResponse {
-        lateinit var errorCode: String
-        lateinit var message: String
-        lateinit var response: String
+        var errorCode: String? = null
+        var message: String? = null
+        var response: String? = null
     }
 }

@@ -8,6 +8,12 @@ class AuthException : Exception {
      */
     var code: AuthError
     /**
+     * Access the messsage for this error.
+     *
+     * @return The error-code for this error.
+     */
+    var messsage: String? = null
+    /**
      * Access the error-code for this error.
      *
      * @return The error-code for this error.
@@ -30,11 +36,12 @@ class AuthException : Exception {
      */
     constructor(
         theCode: AuthError,
-        theMessage: String,
-        theErrorCode: String,
+        theMessage: String?,
+        theErrorCode: String?,
         theErrorResponse: String
     ) : super(theMessage) {
         code = theCode
+        messsage = theMessage
         errorCode = theErrorCode
         errorResponse = theErrorResponse
     }
