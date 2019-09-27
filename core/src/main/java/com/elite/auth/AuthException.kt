@@ -12,13 +12,13 @@ class AuthException : Exception {
      *
      * @return The error-code for this error.
      */
-    lateinit var errorCode: String
+    var errorCode: String? = null
     /**
      * Access the error-code for this error.
      *
      * @return The error-code for this error.
      */
-    lateinit var errorResponse: String
+    var errorResponse: String? = null
 
     /**
      * Construct a new AuthException with a particular error code.
