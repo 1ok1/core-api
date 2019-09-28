@@ -17,14 +17,14 @@ import java.net.CookiePolicy
 
 class Elite {
 
-    private val eliteSharedPref = "io.elite.shared.pref"
-    private val eliteSharedPrefUserId = "io.elite.shared.pref.userId"
-    private val eliteSharedPrefUserRole = "io.elite.shared.pref.eliteSharedPrefUserRole"
-    private val eliteSharedPrefUserToken = "io.elite.shared.pref.eliteSharedPrefUserToken"
-    private val eliteSharedPrefRequestType = "io.elite.shared.pref.eliteSharedPrefRequestType"
-    private val eliteSharedPrefLoginCheck = "io.elite.shared.pref.eliteSharedPrefLoginCheck"
+    private val eliteSharedPref = "io.hasura.shared.pref"
+    private val eliteSharedPrefUserId = "io.hasura.shared.pref.userId"
+    private val eliteSharedPrefUserRole = "io.hasura.shared.pref.hasuraSharedPrefUserRole"
+    private val eliteSharedPrefUserToken = "io.hasura.shared.pref.hasuraSharedPrefUserToken"
+    private val eliteSharedPrefRequestType = "io.hasura.shared.pref.hasuraSharedPrefRequestType"
+    private val eliteSharedPrefLoginCheck = "io.hasura.shared.pref.hasuraSharedPrefLoginCheck"
     private val eliteSharedPrefauthIdentifier =
-        "io.elite.shared.pref.eliteSharedPrefauthIdentifier"
+        "io.hasura.shared.pref.hasuraSharedPrefauthIdentifier"
 
     companion object {
         val instance: Elite = Elite()
