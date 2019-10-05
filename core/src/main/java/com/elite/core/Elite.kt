@@ -220,7 +220,7 @@ class Elite {
                 .connectTimeout(instance.timeOut, TimeUnit.SECONDS)
                 .writeTimeout(instance.timeOut, TimeUnit.SECONDS)
                 .readTimeout(instance.timeOut, TimeUnit.SECONDS)
-                .cookieJar(JavaNetCookieJar(cookieManager))
+//                .cookieJar(JavaNetCookieJar(cookieManager))
                 .build()
             instance.cookiePrefs =
                 instance.context.getSharedPreferences(
