@@ -27,7 +27,7 @@ object Util {
 
     fun getJsonBody(response: okhttp3.Response): String {
         try {
-            return response.body()!!.string()
+            return response.body!!.string()
         } catch (e: Exception) {
             return ""
         }

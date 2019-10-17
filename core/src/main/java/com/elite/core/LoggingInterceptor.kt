@@ -25,24 +25,24 @@ class LoggingInterceptor : Interceptor {
 
         var contentType: MediaType? = null
         var bodyString: String? = null
-        if (response.body() != null) {
-            contentType = response.body()!!.contentType()
-            bodyString = response.body()!!.string()
+        if (response.body != null) {
+            contentType = response.body!!.contentType()
+            bodyString = response.body!!.string()
         }
 
         val time = (t2 - t1) / 1e6
 
-        if (request.method() == "GET") {
-            println(String.format(Locale.getDefault(), "GET $F_REQUEST_WITHOUT_BODY$F_RESPONSE_WITH_BODY", request.url(), time, request.headers(), response.code(), response.headers(), stringifyResponseBody(bodyString)))
-        } else if (request.method() == "POST") {
-            println(String.format(Locale.getDefault(), "POST $F_REQUEST_WITH_BODY$F_RESPONSE_WITH_BODY", request.url(), time, request.headers(), stringifyRequestBody(request), response.code(), response.headers(), stringifyResponseBody(bodyString)))
-        } else if (request.method() == "PUT") {
-            println(String.format(Locale.getDefault(), "PUT $F_REQUEST_WITH_BODY$F_RESPONSE_WITH_BODY", request.url(), time, request.headers(), stringifyRequestBody(request), response.code(), response.headers(), stringifyResponseBody(bodyString)))
-        } else if (request.method() == "DELETE") {
-            println(String.format(Locale.getDefault(), "DELETE $F_REQUEST_WITHOUT_BODY$F_RESPONSE_WITHOUT_BODY", request.url(), time, request.headers(), response.code(), response.headers()))
+        if (request.method == "GET") {
+            println(String.format(Locale.getDefault(), "GET $F_REQUEST_WITHOUT_BODY$F_RESPONSE_WITH_BODY", request.url, time, request.headers, response.code, response.headers, stringifyResponseBody(bodyString)))
+        } else if (request.method == "POST") {
+            println(String.format(Locale.getDefault(), "POST $F_REQUEST_WITH_BODY$F_RESPONSE_WITH_BODY", request.url, time, request.headers, stringifyRequestBody(request), response.code, response.headers, stringifyResponseBody(bodyString)))
+        } else if (request.method == "PUT") {
+            println(String.format(Locale.getDefault(), "PUT $F_REQUEST_WITH_BODY$F_RESPONSE_WITH_BODY", request.url, time, request.headers, stringifyRequestBody(request), response.code, response.headers, stringifyResponseBody(bodyString)))
+        } else if (request.method == "DELETE") {
+            println(String.format(Locale.getDefault(), "DELETE $F_REQUEST_WITHOUT_BODY$F_RESPONSE_WITHOUT_BODY", request.url, time, request.headers, response.code, response.headers))
         }
 
-        if (response.body() != null) {
+        if (response.body != null) {
             val body = ResponseBody.create(contentType, bodyString!!)
             return response.newBuilder().body(body).build()
         } else {
@@ -74,7 +74,7 @@ class LoggingInterceptor : Interceptor {
             try {
                 val copy = request.newBuilder().build()
                 val buffer = Buffer()
-                copy.body()!!.writeTo(buffer)
+                copy.body!!.writeTo(buffer)
                 return buffer.readUtf8()
             } catch (e: IOException) {
                 return "did not work"

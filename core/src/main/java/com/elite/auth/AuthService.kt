@@ -13,10 +13,13 @@ import io.elite.core.LoginCall
 import io.elite.core.LogoutCall
 import io.elite.core.RegisterCall
 import okhttp3.JavaNetCookieJar
-import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.MediaType.Companion.toMediaType
+
 
 class AuthService {
     var client: OkHttpClient? = null
@@ -60,7 +63,9 @@ class AuthService {
     }
 
     private fun <T> mkPostCall(url: String, jsonBody: String, bodyType: Type): Call<T, AuthException> {
-        val reqBody = RequestBody.create(JSON, jsonBody)
+
+
+        val reqBody = jsonBody.toRequestBody(JSON)
         Elite.instance.requestType = true
         val request = Request.Builder()
                 .url(this.url!! + url)
@@ -71,7 +76,7 @@ class AuthService {
     }
 
     private fun <T> mkRegisterCall(url: String, jsonBody: String, bodyType: Type): RegisterCall<T, AuthException> {
-        val reqBody = RequestBody.create(JSON, jsonBody)
+        val reqBody = jsonBody.toRequestBody(JSON)
         Elite.instance.requestType = false
         val request = Request.Builder()
                 .url(this.url!! + url)
@@ -82,7 +87,7 @@ class AuthService {
     }
 
     private fun <T> mkLoginCall(url: String, jsonBody: String, bodyType: Type): LoginCall<T, AuthException> {
-        val reqBody = RequestBody.create(JSON, jsonBody)
+        val reqBody = jsonBody.toRequestBody(JSON)
         Elite.instance.requestType = false
         val request = Request.Builder()
                 .url(this.url!! + url)
@@ -423,7 +428,7 @@ class AuthService {
 
     companion object {
 
-        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val JSON = "application/json; charset=utf-8".toMediaType()
         val gson = GsonBuilder().create()
     }
 

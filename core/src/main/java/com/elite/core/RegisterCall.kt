@@ -19,10 +19,10 @@ class RegisterCall<T, E : Exception>(/* Underlying okhttp call */
 ) {
 
     val isExecuted: Boolean
-        get() = rawCall.isExecuted
+        get() = rawCall.isExecuted()
 
     val isCancelled: Boolean
-        get() = rawCall.isCanceled
+        get() = rawCall.isCanceled()
 
     fun request(): Request {
         return rawCall.request()

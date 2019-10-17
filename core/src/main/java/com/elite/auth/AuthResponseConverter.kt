@@ -11,7 +11,7 @@ class AuthResponseConverter<T>(private val resType: Type) : Converter<T, AuthExc
 
     @Throws(AuthException::class)
     override fun fromResponse(response: okhttp3.Response): T? {
-        val code = response.code()
+        val code = response.code
         val responseBody = Util.getJsonBody(response)
         try {
             if (code == 200) {

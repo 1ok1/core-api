@@ -16,20 +16,19 @@ class EliteTokenInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val response: Response
-        var newRequest: Request? = null
         val builder = request.newBuilder()
         builder.addHeader("App-Name", Elite.instance.appName)
         if (Elite.instance.requestType && Elite.instance.userToken != "") {
             builder.addHeader(
                 "Authorization",
-                Elite.instance.authIdentifier!! + Elite.instance.userToken!!
+                Elite.instance.authIdentifier + Elite.instance.userToken!!
             )
             if (Elite.instance.userRole != "") {
-                builder.addHeader("x-hasura-role", Elite.instance.userRole!!)
+                builder.addHeader("x-hasura-role", Elite.instance.userRole)
             }
         }
-        newRequest = builder.build()
-        response = chain.proceed(newRequest!!)
+        val newRequest = builder.build()
+        response = chain.proceed(newRequest)
         return response
     }
 }
