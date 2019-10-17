@@ -58,7 +58,7 @@ class Call<T, E : Exception>(/* Underlying okhttp call */
                 try {
                     val authException = he as AuthException
                     if (authException.code == AuthError.CONNECTION_ERROR) {
-                        noInternetConnection
+                        noInternetConnection()
                     } else {
                         onFailure(he)
                     }
@@ -114,7 +114,7 @@ class Call<T, E : Exception>(/* Underlying okhttp call */
                     try {
                         val authException = he as AuthException
                         if (authException.code == AuthError.CONNECTION_ERROR) {
-                            noInternetConnection
+                            noInternetConnection()
                         } else {
                             onFailure(he)
                         }
