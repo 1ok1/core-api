@@ -18,15 +18,24 @@ class EliteTokenInterceptor : Interceptor {
         val response: Response
         val builder = request.newBuilder()
         builder.addHeader("App-Name", Elite.instance.appName)
-        if (Elite.instance.requestType && Elite.instance.userToken != "") {
-            builder.addHeader(
-                "Authorization",
-                Elite.instance.authIdentifier + Elite.instance.userToken!!
-            )
+        if (Elite.instance.requestType) {
+            if (Elite.instance.userToken != "") {
+                builder.addHeader(
+                    "Authorization", Elite.instance.authIdentifier + Elite.instance.userToken!!
+                )
+            }
             if (Elite.instance.userRole != "") {
-                builder.addHeader("x-hasura-role", Elite.instance.userRole)
+                builder.addHeader(
+                    "x-hasura-role", Elite.instance.userRole
+                )
+            }
+            if (Elite.instance.sessionId != "") {
+                builder.addHeader(
+                    "x-session-id", Elite.instance.sessionId!!
+                )
             }
         }
+
         val newRequest = builder.build()
         response = chain.proceed(newRequest)
         return response

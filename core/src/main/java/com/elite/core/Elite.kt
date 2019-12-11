@@ -21,6 +21,7 @@ class Elite {
     private val eliteSharedPrefUserId = "io.hasura.shared.pref.userId"
     private val eliteSharedPrefUserRole = "io.hasura.shared.pref.hasuraSharedPrefUserRole"
     private val eliteSharedPrefUserToken = "io.hasura.shared.pref.hasuraSharedPrefUserToken"
+    private val eliteSharedPrefSessionId = "io.hasura.shared.pref.eliteSharedPrefSessionId"
     private val eliteSharedPrefRequestType = "io.hasura.shared.pref.hasuraSharedPrefRequestType"
     private val eliteSharedPrefLoginCheck = "io.hasura.shared.pref.hasuraSharedPrefLoginCheck"
     private val eliteSharedPrefauthIdentifier =
@@ -77,6 +78,14 @@ class Elite {
         set(userToken) {
             val prefsWriter = cookiePrefs.edit()
             prefsWriter.putString(eliteSharedPrefUserToken, userToken)
+            prefsWriter.apply()
+        }
+
+    var sessionId: String?
+        get() = cookiePrefs.getString(eliteSharedPrefSessionId, "")
+        set(userToken) {
+            val prefsWriter = cookiePrefs.edit()
+            prefsWriter.putString(eliteSharedPrefSessionId, userToken)
             prefsWriter.apply()
         }
 
