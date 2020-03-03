@@ -34,6 +34,14 @@ class EliteTokenInterceptor : Interceptor {
                     "x-session-id", Elite.instance.sessionId!!
                 )
             }
+            if (Elite.instance.version != "") {
+                builder.addHeader(
+                    "version", Elite.instance.version!!
+                )
+            }
+            builder.addHeader(
+                "platform", "Android"
+            )
         }
 
         val newRequest = builder.build()
