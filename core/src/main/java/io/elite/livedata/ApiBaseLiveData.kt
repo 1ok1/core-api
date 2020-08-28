@@ -15,15 +15,15 @@ open class ApiBaseLiveData<T> : LiveData<T>() {
 
     protected fun <T> makeApiCall(
         apiCall: Call<T, AuthException>,
-        data: MutableLiveData<Resource<T>>
-    ): LiveData<Resource<T>> {
-        data.value = Resource.loading()
+        data: MutableLiveData<Response<T>>
+    ): LiveData<Response<T>> {
+        data.value = Response.loading()
         apiCall.enqueueOnUIThread({
-            data.value = Resource.success(it)
+            data.value = Response.success(it)
         }, {
-            data.value = Resource.failure(it)
+            data.value = Response.failure(it)
         }, {
-            data.value = Resource.noInternet()
+            data.value = Response.noInternet()
         })
         return data
     }
