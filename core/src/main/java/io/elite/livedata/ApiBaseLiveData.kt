@@ -19,6 +19,8 @@ open class ApiBaseLiveData<T> : LiveData<T>() {
     ): LiveData<Response<T>> {
         data.value = Response.loading()
         apiCall.enqueueOnUIThread({
+            data.value = Response.loading()
+        }, {
             data.value = Response.success(it)
         }, {
             data.value = Response.failure(it)

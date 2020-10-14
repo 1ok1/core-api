@@ -8,6 +8,7 @@ import okhttp3.Request
 
 import java.io.IOException
 
+typealias loading = () -> Unit
 typealias onSuccess<T> = (r: T?) -> Unit
 typealias onFailure<E> = (e: E) -> Unit
 typealias noInternetConnection = () -> Unit
@@ -27,10 +28,12 @@ class Call<T, E : Exception>(/* Underlying okhttp call */
     }
 
     fun enqueue(
+        loading: loading,
         onSuccess: onSuccess<T>,
         onFailure: onFailure<E>,
         noInternetConnection: noInternetConnection
     ) {
+        loading()
         rawCall.enqueue(object : okhttp3.Callback {
             @Throws(IOException::class)
             override fun onResponse(call: okhttp3.Call, rawResponse: okhttp3.Response) {
@@ -81,11 +84,13 @@ class Call<T, E : Exception>(/* Underlying okhttp call */
 
 
     fun enqueueOnUIThread(
+        loading: loading,
         onSuccess: onSuccess<T>,
         onFailure: onFailure<E>,
         noInternetConnection: noInternetConnection
     ) {
         val handler = Handler()
+        loading()
         rawCall.enqueue(object : okhttp3.Callback {
             @Throws(IOException::class)
             override fun onResponse(call: okhttp3.Call, rawResponse: okhttp3.Response) {
