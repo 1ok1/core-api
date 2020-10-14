@@ -17,7 +17,6 @@ open class ApiBaseLiveData<T> : LiveData<T>() {
         apiCall: Call<T, AuthException>,
         data: MutableLiveData<Response<T>>
     ): LiveData<Response<T>> {
-        data.value = Response.loading()
         apiCall.enqueueOnUIThread({
             data.value = Response.loading()
         }, {
