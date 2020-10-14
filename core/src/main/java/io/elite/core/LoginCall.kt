@@ -28,10 +28,12 @@ class LoginCall<T, E : Exception>(/* Underlying okhttp call */
     }
 
     fun enqueue(
+        loading: loading,
         onSuccess: onSuccess<T>,
         onFailure: onFailure<E>,
         noInternetConnection: noInternetConnection
     ) {
+        loading()
         rawCall.enqueue(object : okhttp3.Callback {
             @Throws(IOException::class)
             override fun onResponse(call: okhttp3.Call, rawResponse: okhttp3.Response) {
@@ -82,11 +84,13 @@ class LoginCall<T, E : Exception>(/* Underlying okhttp call */
     }
 
     fun enqueueOnUIThread(
+        loading: loading,
         onSuccess: onSuccess<T>,
         onFailure: onFailure<E>,
         noInternetConnection: noInternetConnection
     ) {
         val handler = Handler()
+        loading()
         rawCall.enqueue(object : okhttp3.Callback {
             @Throws(IOException::class)
             override fun onResponse(call: okhttp3.Call, rawResponse: okhttp3.Response) {
