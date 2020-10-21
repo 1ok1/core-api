@@ -1,23 +1,30 @@
 package com.elite.core.retrofit
 
+import retrofit2.Call
 import retrofit2.Callback
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
 
-interface Callback<T> : Callback<T> {
 
-    fun onSuccess(response: T?)
+fun<T> Call<T>.enqueue(callback: com.elite.core.retrofit.Callback<T>.() -> Unit) {
+    val callbackBk = Callback<T>()
+    callback.invoke(callbackBk)
+    this.enqueue(callbackBk)
+    callbackBk.loading?.invoke()
+}
 
-    fun onFailure(e: Exception)
-
-    fun noInternetConnection()
+class Callback<T> : Callback<T> {
+    var loading : (() -> Unit?)? = null
+    var onSuccess : ((r: T?) -> Unit)? = null
+    var onFailure :  ((e: Exception) -> Unit)? = null
+    var noInternetConnection: (() -> Unit?)? = null
 
     override fun onFailure(call: retrofit2.Call<T>, t: Throwable) {
         if (t is IOException || t is SocketTimeoutException || t is ConnectException) {
             if (t is SocketTimeoutException || t is TimeoutException) {
-                onFailure(
+                onFailure?.invoke(
                     Exception(
                         Error.CONNECTION_ERROR,
                         "Something went wrong please try after sometime",
@@ -27,10 +34,10 @@ interface Callback<T> : Callback<T> {
                 )
                 //avsInterface.onError(call, new AvsException("Oops something went wrong, please try again later..."));
             } else {
-                noInternetConnection()
+                noInternetConnection?.invoke()
             }
         } else {
-            onFailure(
+            onFailure?.invoke(
                 Exception(
                     Error.CONNECTION_ERROR,
                     "Something went wrong please try after sometime",
@@ -46,7 +53,7 @@ interface Callback<T> : Callback<T> {
         val responseBody = Util.getJsonBody(response)
         try {
             if (code == 200) {
-                onSuccess(response.body())
+                onSuccess?.invoke(response.body())
             } else {
                 val err = Util.parseJson<ResponseConverter.ErrorResponse>(
                     Service.gson,
@@ -63,10 +70,10 @@ interface Callback<T> : Callback<T> {
                     500 -> Error.INTERNAL_ERROR
                     else -> Error.UNEXPECTED_CODE
                 }
-                onFailure(Exception(errCode, err.message, err.errorCode, responseBody))
+                onFailure?.invoke(Exception(errCode, err.message, err.errorCode, responseBody))
             }
         } catch (e: JsonException) {
-            onFailure(Exception(Error.INTERNAL_ERROR, e))
+            onFailure?.invoke(Exception(Error.INTERNAL_ERROR, e))
         }
     }
 }
