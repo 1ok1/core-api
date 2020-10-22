@@ -16,10 +16,10 @@ fun<T> Call<T>.enqueue(callback: com.elite.core.retrofit.Callback<T>.() -> Unit)
 }
 
 class Callback<T> : Callback<T> {
-    var loading : (() -> Unit?)? = null
+    var loading : (() -> Unit)? = null
     var onSuccess : ((r: T?) -> Unit)? = null
     var onFailure :  ((e: Exception) -> Unit)? = null
-    var noInternetConnection: (() -> Unit?)? = null
+    var noInternetConnection: (() -> Unit)? = null
 
     override fun onFailure(call: retrofit2.Call<T>, t: Throwable) {
         if (t is IOException || t is SocketTimeoutException || t is ConnectException) {
