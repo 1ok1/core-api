@@ -32,7 +32,6 @@ class Callback<T> : Callback<T> {
                         ""
                     )
                 )
-                //avsInterface.onError(call, new AvsException("Oops something went wrong, please try again later..."));
             } else {
                 noInternetConnection?.invoke()
             }
